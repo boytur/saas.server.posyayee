@@ -37,6 +37,10 @@ const User = connection.define('tb_users', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+    user_acc_verify: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
     user_role: {
         type: DataTypes.STRING(45),
         allowNull: false
