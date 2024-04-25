@@ -11,6 +11,10 @@ const Order = connection.define('tb_orders', {
         primaryKey: true,
         autoIncrement: true,
     },
+    order_no: {
+        type: DataTypes.STRING(45),
+        allowNull: false
+    },
     order_title: {
         type: DataTypes.STRING(225),
         allowNull: false
