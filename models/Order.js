@@ -15,6 +15,10 @@ const Order = connection.define('tb_orders', {
         type: DataTypes.STRING(45),
         allowNull: false
     },
+    order_id_no: {
+        type: DataTypes.STRING(225),
+        allowNull: false
+    },
     order_title: {
         type: DataTypes.STRING(225),
         allowNull: false
@@ -31,7 +35,7 @@ const Order = connection.define('tb_orders', {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
-    order_ref: {
+    order_session_id: {
         type: DataTypes.STRING(225),
         allowNull: false
     },
@@ -40,6 +44,5 @@ const Order = connection.define('tb_orders', {
 Order.belongsTo(User, { foreignKey: 'user_id' });
 Order.belongsTo(Package, { foreignKey: 'package_id' });
 Order.belongsTo(Store, { foreignKey: 'store_id' });
-//Order.sync({ alter: true });
 
 module.exports = Order;
