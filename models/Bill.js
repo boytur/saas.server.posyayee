@@ -17,6 +17,5 @@ const Bill = connection.define('tb_bills', {
 });
 
 Bill.belongsTo(User, { foreignKey: 'user_id'});
-//Bill.sync({ alter: true });
 
 module.exports = Bill;

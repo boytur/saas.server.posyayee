@@ -33,5 +33,5 @@ const Store = connection.define('tb_stores', {
     },
 });
 Store.belongsTo(Package, { foreignKey: 'package_id' });
-// Store.sync({ alter: true });
+
 module.exports = Store;

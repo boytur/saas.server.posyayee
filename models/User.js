@@ -54,6 +54,4 @@ const User = connection.define('tb_users', {
 });
 User.belongsTo(Store, { foreignKey: 'store_id', allowNull: true });
 
-// User.sync({ alter: true });
-
 module.exports = User;

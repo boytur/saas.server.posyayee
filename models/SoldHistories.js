@@ -18,6 +18,5 @@ const SoldHistories = connection.define('tb_sold_histories', {
 
 SoldHistories.belongsTo(User, { foreignKey: 'user_id' });
 SoldHistories.belongsTo(Product, { foreignKey: 'prod_id' });
-// SoldHistories.sync({ alter: true });
 
 module.exports = SoldHistories;

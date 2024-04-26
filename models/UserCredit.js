@@ -28,6 +28,5 @@ const UserCredit = connection.define('tb_user_credits', {
 });
 
 UserCredit.belongsTo(Store, { foreignKey: 'store_id' });
-// UserCredit.sync({ alter: true });
 
 module.exports = UserCredit;

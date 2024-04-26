@@ -17,6 +17,5 @@ const UserCreditOrder = connection.define('tb_credit_orders', {
 });
 
 UserCreditOrder.belongsTo(UserCredit, { foreignKey: 'user_credit_id' });
-// UserCreditOrder.sync({ alter: true });
 
 module.exports = UserCreditOrder;

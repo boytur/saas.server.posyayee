@@ -14,5 +14,4 @@ const Categories = connection.define('tb_categories', {
     },
 });
 
-// Categories.sync({ alter: true });
 module.exports = Categories;

@@ -24,6 +24,5 @@ const BillDetail = connection.define('tb_bill_details', {
 });
 
 BillDetail.belongsTo(Bill, { foreignKey: 'bill_id'});
-//BillDetail.sync({ alter: true });
 
 module.exports = BillDetail;

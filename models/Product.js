@@ -43,5 +43,4 @@ const Product = connection.define('tb_products', {
 Product.belongsTo(Store, { foreignKey: 'store_id' });
 Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true });
 
-// Product.sync({ alter: true });
 module.exports = Product;

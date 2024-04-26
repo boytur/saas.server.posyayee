@@ -30,5 +30,4 @@ const Package = connection.define('tb_packages', {
     }
 });
 
-// Package.sync({ alter: true });
 module.exports = Package;
