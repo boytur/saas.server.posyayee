@@ -27,6 +27,6 @@ const UserCredit = connection.define('tb_user_credits', {
     }
 });
 
-UserCredit.belongsTo(Store, { foreignKey: 'store_id' });
+UserCredit.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
 
 module.exports = UserCredit;

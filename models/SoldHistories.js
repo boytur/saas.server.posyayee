@@ -16,7 +16,7 @@ const SoldHistories = connection.define('tb_sold_histories', {
     }
 });
 
-SoldHistories.belongsTo(User, { foreignKey: 'user_id' });
-SoldHistories.belongsTo(Product, { foreignKey: 'prod_id' });
+SoldHistories.belongsTo(User, { foreignKey: 'user_id', onDelete: "cascade" });
+SoldHistories.belongsTo(Product, { foreignKey: 'prod_id', onDelete: "cascade" });
 
 module.exports = SoldHistories;

@@ -41,8 +41,8 @@ const Order = connection.define('tb_orders', {
     },
 });
 
-Order.belongsTo(User, { foreignKey: 'user_id' });
-Order.belongsTo(Package, { foreignKey: 'package_id' });
-Order.belongsTo(Store, { foreignKey: 'store_id' });
+Order.belongsTo(User, { foreignKey: 'user_id', onDelete: "cascade" });
+Order.belongsTo(Package, { foreignKey: 'package_id', onDelete: "cascade" });
+Order.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
 
 module.exports = Order;

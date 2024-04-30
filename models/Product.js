@@ -40,7 +40,7 @@ const Product = connection.define('tb_products', {
     },
 });
 
-Product.belongsTo(Store, { foreignKey: 'store_id' });
-Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true });
+Product.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
+Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true, onDelete: "cascade" });
 
 module.exports = Product;

@@ -23,6 +23,6 @@ const BillDetail = connection.define('tb_bill_details', {
     }
 });
 
-BillDetail.belongsTo(Bill, { foreignKey: 'bill_id'});
+BillDetail.belongsTo(Bill, { foreignKey: 'bill_id', onDelete: "cascade" });
 
 module.exports = BillDetail;

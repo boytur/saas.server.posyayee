@@ -16,6 +16,6 @@ const UserCreditOrder = connection.define('tb_credit_orders', {
     },
 });
 
-UserCreditOrder.belongsTo(UserCredit, { foreignKey: 'user_credit_id' });
+UserCreditOrder.belongsTo(UserCredit, { foreignKey: 'user_credit_id', onDelete: "cascade" });
 
 module.exports = UserCreditOrder;
