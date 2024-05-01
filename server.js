@@ -1,9 +1,10 @@
 const express = require('express');
 const http = require('http');
+const winston = require('winston');
 const app = express();
 require('dotenv').config();
 const socketIo = require('socket.io');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3030;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -11,6 +12,19 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+
+// Configure Winston to log to a file and console
+const { createLogger, transports, format } = require('winston');
+const logger = createLogger({
+    transports: [
+        new transports.Console(),
+        new transports.File({ filename: 'combined.log' })
+    ],
+    format: format.combine(
+        format.timestamp(),
+        format.printf(info => `${info.timestamp} - ${info.message}`)
+    )
+});
 
 const authentications = require('./controllers/authentications/Index');
 const payments = require('./controllers/payments/Index');
@@ -41,17 +55,24 @@ const limiter = rateLimit({
     handler: function (req, res) {
         res.status(429).json({
             success: false,
-            message: 'Too many requests, please try again later.'
+            message: 'ตรวจพบคำขอจำนวนมาก โปรดหยุดการกระทำนั้น'
         });
     }
 });
 
-app.use(morgan('dev'));
+// Define the Winston stream for Morgan
+const morganStream = {
+    write: function (message) {
+        logger.info(message.trim());
+    }
+};
+
+app.use(morgan('dev', { stream: morganStream }));
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(limiter);
 
-//default routes
+// Default routes
 app.get('/', async (req, res) => {
     return res.status(200).json({
         success: true,
@@ -65,14 +86,17 @@ app.use(bodyParser.json());
 app.use(authentications);
 
 io.on('connection', (socket) => {
-    console.log('A user connected'.socket.id);
+    console.log('A user connected', socket.id);
+    logger.info(`A user connected: ${socket.id}`);
     socket.on('disconnect', () => {
         console.log('User disconnected');
+        logger.info('User disconnected');
     });
 });
 
 server.listen(port, () => {
     console.log(`POSYAYEE-V2 app listening on port ${port}`);
+    logger.info(`POSYAYEE-V2 app listening on port ${port}`);
 });
 
 /** VERY DANGEROUS */
@@ -80,9 +104,11 @@ const syceDb = async () => {
     sequelize.sync({ alter: true, force: true })
         .then(() => {
             console.log('Sequelize models synchronized with database schema');
+            logger.info('Sequelize models synchronized with database schema');
         })
         .catch((error) => {
             console.error('Error synchronizing Sequelize models:', error);
+            logger.error('Error synchronizing Sequelize models:', error);
         });
 }
 //syceDb();
