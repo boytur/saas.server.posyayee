@@ -16,7 +16,7 @@ const Refresh = async (req, res) => {
         }
 
         try {
-            const secret = process.env.JWT_SECRET;
+            const secret = process.env.JWT_REFRESH;
             const verify = jwt.verify(refreshToken, secret);
 
             if (verify !== null) {
