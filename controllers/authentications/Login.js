@@ -69,9 +69,9 @@ const Login = async (req, res) => {
         }
     }
 
-    const refreshToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '30d' });
+    const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH, { expiresIn: '30d' });
     const accessToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    const userDataToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1d' });
+    const userDataToken = jwt.sign({ user }, process.env.JWT_UUID, { expiresIn: '1d' });
 
     const expirationDate = new Date();
     expirationDate.setDate(expirationDate.getDate() + 30);

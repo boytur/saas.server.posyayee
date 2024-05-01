@@ -88,21 +88,12 @@ const Register = async (req, res) => {
 
         // Create new store
         let newStore;
-        if (package.package_id === 1) {
-            newStore = await Store.create({
-                "store_name": store_name,
-                "store_remaining": 31,
-                "store_active": true,
-                "package_id": package.package_id
-            });
-        } else {
-            newStore = await Store.create({
-                "store_name": store_name,
-                "store_remaining": 0,
-                "store_active": false,
-                "package_id": package.package_id
-            });
-        }
+        newStore = await Store.create({
+            "store_name": store_name,
+            "store_remaining": 0,
+            "store_active": false,
+            "package_id": package.package_id
+        });
 
         // Create new user
         const hashedPassword = await bcryptHash(user_password);
@@ -133,7 +124,7 @@ const Register = async (req, res) => {
             }
         }
 
-        const refreshToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '30d' });
+        const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH, { expiresIn: '30d' });
         const accessToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         const expirationDate = new Date();
