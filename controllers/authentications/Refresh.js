@@ -21,7 +21,7 @@ const Refresh = async (req, res) => {
 
             if (verify !== null) {
                 const decodeUser = userDecode(req);
-                const userId = decodeUser.user.user_id;
+                const userId = decodeUser?.user?.user_id;
 
                 if (!userId) {
                     return res.status(400).json({ success: false, message: "Authentication failed for this user" })
