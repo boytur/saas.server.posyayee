@@ -13,6 +13,7 @@ const Product = connection.define('tb_products', {
     prod_barcode: {
         type: DataTypes.STRING(20),
         allowNull: true,
+        unique: true,
     },
     prod_name: {
         type: DataTypes.STRING(225),
