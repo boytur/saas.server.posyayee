@@ -15,7 +15,7 @@ module.exports = {
             const verify = jwt.verify(token, secret);
 
             if (verify !== null) {
-                return true;
+                next();
             } else {
                 res.status(401).send({
                     success: false,

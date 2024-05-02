@@ -21,7 +21,14 @@ class Permission {
         return false;
     }
 
-    canViewStock() {
+    canViewAdminAnalytic() {
+        if ((this.role === 'god') && this.user_acc_verify) {
+            return true;
+        }
+        return false;
+    }
+
+    canViewProduct() {
         if ((this.role === 'owner' || this.role === 'employee' || this.role === 'manager') && this.user_acc_verify) {
             return true;
         }
