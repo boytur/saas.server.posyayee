@@ -46,6 +46,13 @@ const Login = async (req, res) => {
         });
     }
 
+    if (!user.tb_store.store_active) {
+        return res.status(401).json({
+            sucess: false,
+            message: "ร้านนี้ทำการปิดบัญชีร้านค้าแล้ว กรุณาติดต่อ Posyayee เพื่อเปิดหากต้องการใช้งาน!",
+        });
+    }
+
     user = {
         user_id: user.user_id,
         user_acc_verify: user.user_acc_verify,
