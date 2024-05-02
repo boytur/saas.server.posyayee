@@ -40,6 +40,8 @@ const SoldHistories = require('./models/SoldHistories');
 const Bill = require('./models/Bill');
 const BillDetail = require('./models/BillDetail');
 const Otp = require('./models/Otp');
+const admin_analytics = require('./controllers/admins/analytics/Index');
+const products = require('./controllers/products/Index');
 
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173'],
@@ -84,6 +86,8 @@ app.get('/', async (req, res) => {
 app.use(payments);
 app.use(bodyParser.json());
 app.use(authentications);
+app.use(admin_analytics);
+app.use(products);
 
 io.on('connection', (socket) => {
     console.log('A user connected', socket.id);
