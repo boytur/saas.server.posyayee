@@ -12,6 +12,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
+const cron = require('node-cron');
 
 // Configure Winston to log to a file and console
 const { createLogger, transports, format } = require('winston');
@@ -45,6 +46,7 @@ const UserLog = require('./models/UserLog');
 
 const admin_analytics = require('./controllers/admins/analytics/Index');
 const products = require('./controllers/products/Index');
+const decreaseStoreRemaining = require('./libs/decreaseStoreRemaining');
 
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173', 'https://salev2.posyayee.shop'],
@@ -119,3 +121,9 @@ const syceDb = async () => {
         });
 }
 //syceDb();
+
+cron.schedule('0 0 * * *', () => {
+    decreaseStoreRemaining();
+}, {
+    timezone: 'Asia/Bangkok'
+});
