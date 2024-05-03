@@ -91,7 +91,7 @@ const Register = async (req, res) => {
         newStore = await Store.create({
             "store_name": store_name,
             "store_remaining": 0,
-            "store_active": false,
+            "store_active": true,
             "package_id": package.package_id
         });
 

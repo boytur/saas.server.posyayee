@@ -50,13 +50,6 @@ const VerifyPayment = async (req, res) => {
 
                 console.log("Updated updatedStoreRemaining: ", updatedStoreRemaining);
 
-                const updatedStoreActive = await Store.update(
-                    { store_active: true },
-                    { where: { store_id: order.store.store_id } }
-                );
-
-                console.log("Updated updatedStoreActive: ", updatedStoreActive);
-
                 try {
                     const updatedRows = await Order.update(
                         { order_status: status },
