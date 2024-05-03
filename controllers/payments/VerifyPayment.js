@@ -36,7 +36,7 @@ const VerifyPayment = async (req, res) => {
                     ]
                 });
 
-                if (!order?.tb_store || order?.tb_store?.store_id === null) {
+                if (!order?.store || order?.store?.store_id === null) {
                     return res.status(400).json({
                         sucess: false,
                         message: "ไม่พบร้านค้าไอดีนี้"
@@ -44,15 +44,15 @@ const VerifyPayment = async (req, res) => {
                 }
 
                 const updatedStoreRemaining = await Store.update(
-                    { store_remaining: order.tb_store.store_remaining + 31 },
-                    { where: { store_id: order.tb_store.store_id } }
+                    { store_remaining: order.store.store_remaining + 31 },
+                    { where: { store_id: order.store.store_id } }
                 );
 
                 console.log("Updated updatedStoreRemaining: ", updatedStoreRemaining);
 
                 const updatedStoreActive = await Store.update(
                     { store_active: true },
-                    { where: { store_id: order.tb_store.store_id } }
+                    { where: { store_id: order.store.store_id } }
                 );
 
                 console.log("Updated updatedStoreActive: ", updatedStoreActive);

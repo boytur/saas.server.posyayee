@@ -38,7 +38,7 @@ const Refresh = async (req, res) => {
                     return res.status(401).json({ error: "ไม่พบผู้ใช้นี้ค่ะ" });
                 }
 
-                if (!user.tb_store.store_active) {
+                if (!user.store.store_active) {
                     res.status(401).json({
                         sucess: false,
                         message: 'ร้านนี้ทำการปิดบัญชีร้านค้าแล้ว \n กรุณาติดต่อ posyayee เพื่อเปิดหากต้องการใช้งาน!',
@@ -56,15 +56,15 @@ const Refresh = async (req, res) => {
                     user_image: user.user_image,
                     store_id: user.store_id,
                     store: {
-                        store_id: user.tb_store.store_id,
-                        store_name: user.tb_store.store_name,
-                        store_remaining: user.tb_store.store_remaining,
-                        store_active: user.tb_store.store_active,
-                        package_id: user.tb_store.package_id,
+                        store_id: user.store.store_id,
+                        store_name: user.store.store_name,
+                        store_remaining: user.store.store_remaining,
+                        store_active: user.store.store_active,
+                        package_id: user.store.package_id,
                     },
                     package: {
-                        package_id: user.tb_store.tb_package.package_id,
-                        package_name: user.tb_store.tb_package.package_name,
+                        package_id: user.store.package.package_id,
+                        package_name: user.store.package.package_name,
                     }
                 }
 
