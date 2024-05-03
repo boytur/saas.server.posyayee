@@ -49,7 +49,7 @@ const products = require('./controllers/products/Index');
 const decreaseStoreRemaining = require('./libs/decreaseStoreRemaining');
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173', 'https://salev2.posyayee.shop'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173', 'https://salev2.posyayee.shop', 'https://posyayee.shop'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 };
