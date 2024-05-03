@@ -2,8 +2,9 @@ const connection = require('../connections/connect');
 const { DataTypes } = require('sequelize');
 const User = require('./User');
 const Product = require('./Product');
+const Store = require('./Store');
 
-const SoldHistories = connection.define('tb_sold_histories', {
+const SoldHistories = connection.define('sold_histories', {
     sold_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -15,7 +16,7 @@ const SoldHistories = connection.define('tb_sold_histories', {
         allowNull: false,
     }
 });
-
+SoldHistories.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
 SoldHistories.belongsTo(User, { foreignKey: 'user_id', onDelete: "cascade" });
 SoldHistories.belongsTo(Product, { foreignKey: 'prod_id', onDelete: "cascade" });
 

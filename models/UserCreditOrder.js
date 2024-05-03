@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const Store = require('./Store');
 const UserCredit = require('./UserCredit');
 
-const UserCreditOrder = connection.define('tb_credit_orders', {
+const UserCreditOrder = connection.define('credit_orders', {
     user_credit_id: {
         type: DataTypes.BIGINT,
         allowNull: false,

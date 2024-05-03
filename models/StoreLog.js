@@ -3,24 +3,24 @@ const { DataTypes } = require('sequelize');
 const Store = require('./Store');
 const User = require('./User');
 
-const Otp = connection.define('otps', {
-    otp_id: {
+const StoreLog = connection.define('store_logs', {
+    store_log_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true,
     },
-    otp_refno: {
+    store_log_name: {
         type: DataTypes.STRING(225),
-        allowNull: false
+        allowNull: false,
     },
-    otp_token: {
+    store_log_user_ip: {
         type: DataTypes.STRING(225),
-        allowNull: false
+        allowNull: false,
     }
 });
 
-Otp.belongsTo(User, { foreignKey: 'user_id', onDelete: "cascade" });
-Otp.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
+StoreLog.belongsTo(Store, { foreignKey: 'store_id', allowNull: false, onDelete: "cascade" });
+StoreLog.belongsTo(User, { foreignKey: 'user_id', allowNull: false, });
 
-module.exports = Otp;
+module.exports = StoreLog;

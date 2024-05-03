@@ -40,6 +40,9 @@ const SoldHistories = require('./models/SoldHistories');
 const Bill = require('./models/Bill');
 const BillDetail = require('./models/BillDetail');
 const Otp = require('./models/Otp');
+const StoreLog = require('./models/StoreLog');
+const UserLog = require('./models/UserLog');
+
 const admin_analytics = require('./controllers/admins/analytics/Index');
 const products = require('./controllers/products/Index');
 

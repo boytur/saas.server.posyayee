@@ -2,7 +2,7 @@ const connection = require('../connections/connect');
 const { DataTypes } = require("sequelize");
 const Package = require('./Package');
 
-const Store = connection.define('tb_stores', {
+const Store = connection.define('stores', {
     store_id: {
         type: DataTypes.BIGINT,
         allowNull: false,

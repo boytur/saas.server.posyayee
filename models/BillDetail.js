@@ -1,8 +1,9 @@
 const connection = require('../connections/connect');
 const { DataTypes } = require('sequelize');
 const Bill = require('./Bill');
+const Product = require('./Product');
 
-const BillDetail = connection.define('tb_bill_details', {
+const BillDetail = connection.define('bill_details', {
     bill_detail_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -24,5 +25,6 @@ const BillDetail = connection.define('tb_bill_details', {
 });
 
 BillDetail.belongsTo(Bill, { foreignKey: 'bill_id', onDelete: "cascade" });
+BillDetail.belongsTo(Product, { foreignKey: 'prod_id'});
 
 module.exports = BillDetail;

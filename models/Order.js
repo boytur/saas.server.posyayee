@@ -4,7 +4,7 @@ const Store = require('./Store');
 const User = require('./User');
 const Package = require('./Package');
 
-const Order = connection.define('tb_orders', {
+const Order = connection.define('orders', {
     order_id: {
         type: DataTypes.BIGINT,
         allowNull: false,

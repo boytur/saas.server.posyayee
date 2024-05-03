@@ -2,7 +2,7 @@ const connection = require('../connections/connect');
 const { DataTypes } = require('sequelize');
 const Store = require('./Store');
 
-const User = connection.define('tb_users', {
+const User = connection.define('users', {
     user_id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -59,6 +59,6 @@ const User = connection.define('tb_users', {
         allowNull: false
     }
 });
-User.belongsTo(Store, { foreignKey: 'store_id', allowNull: true, onDelete: "cascade" });
+User.belongsTo(Store, { foreignKey: 'store_id', allowNull: false, onDelete: "cascade" });
 
 module.exports = User;

@@ -4,7 +4,7 @@ const Store = require('./Store');
 const UserCredit = require('./UserCredit');
 const UserCreditOrder = require('./UserCreditOrder');
 
-const UserCreditDetail = connection.define('tb_credit_details', {
+const UserCreditDetail = connection.define('credit_details', {
     credit_detail_id: {
         type: DataTypes.BIGINT,
         allowNull: false,

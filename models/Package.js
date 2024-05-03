@@ -1,7 +1,7 @@
 const connection = require('../connections/connect');
 const { DataTypes } = require('sequelize');
 
-const Package = connection.define('tb_packages', {
+const Package = connection.define('packages', {
     package_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
