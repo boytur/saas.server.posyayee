@@ -8,6 +8,7 @@ const Otp = require("../../models/Otp");
 const User = require("../../models/User");
 const Refresh = require("./Refresh");
 const Package = require("../../models/Package");
+const { validateInteger } = require("../../libs/validate");
 
 const GetOTPRegister = async (req, res) => {
     try {
@@ -22,7 +23,7 @@ const GetOTPRegister = async (req, res) => {
         // Validate request data
         const requiredFields = ['store_name', 'package_id', 'user_phone', 'user_password', 'user_accepted'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
-        
+
         if (missingFields.length > 0) {
             return res.status(400).json({
                 success: false,
@@ -54,8 +55,15 @@ const GetOTPRegister = async (req, res) => {
             });
         }
 
+        if (!validateInteger(package_id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'แพ็คเกจไอดีไม่ถูกต้อง!'
+            });
+        }
+
         // Find package
-        let package = await Package.findByPk(package_id, {
+        let package = await Package.findByPk(parseInt(package_id), {
             attributes: ['package_id', 'package_name', 'package_price']
         });
 
