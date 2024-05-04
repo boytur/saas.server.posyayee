@@ -7,37 +7,30 @@ const validatePagination = async (query, allowedSortByAttributes, defaultSortBy)
 
         // Validate page and perPage values
         if (isNaN(page) || isNaN(perPage) || page < 1 || perPage < 1) {
-            return res.status(400).json(
-                {
-                    success: false,
-                    message: 'Invalid page or perPage value'
-                });
+            return false;
         }
 
         const offset = (page - 1) * perPage;
 
         // Validate sortBy and sort values;
         if (!allowedSortByAttributes.includes(sortBy)) {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid sortBy attribute'
-            });
+            return false;
         }
 
         if (sort.toUpperCase() !== 'ASC' && sort.toUpperCase() !== 'DESC') {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid sort order'
-            });
+            return false;
         }
 
-        return {
+        const validated = {
             page: page,
             perPage: perPage,
             sortBy: sortBy,
             sort: sort.toUpperCase(),
             offset: offset
-        };
+        }
+
+        return validated;
+
     }
     catch (err) {
         console.error("Err while validate pagination", err);
