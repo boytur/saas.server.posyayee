@@ -13,6 +13,8 @@ const io = socketIo(server);
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const cron = require('node-cron');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
 // Configure Winston to log to a file and console
 const { createLogger, transports, format } = require('winston');
@@ -66,6 +68,19 @@ const limiter = rateLimit({
         });
     }
 });
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        info: {
+            title: 'POSYAYEE-V2 | API Documentation',
+            version: '1.0.0',
+        }
+    },
+    apis: ['docs/docs.yaml']
+};
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Define the Winston stream for Morgan
 const morganStream = {

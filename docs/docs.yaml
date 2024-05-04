@@ -1,0 +1,402 @@
+definitions:
+  User:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        example: 1
+      user_fname:
+        type: string
+        example: 'ปิยะวัฒน์'
+      user_lname:
+        type: string
+        example: 'วงค์ญาติ'
+      user_email:
+        type: string
+        example: 'piyawat@example.com'
+      user_phone:
+        type: string
+        example: '0812345678'
+      user_password:
+        type: string
+        example: 'password123'
+      user_image:
+        type: string
+        example: 'https://example.com/user.jpg'
+      user_accepted:
+        type: boolean
+        example: true
+      user_acc_verify:
+        type: boolean
+        example: true
+      user_otp_quota:
+        type: integer
+        example: 5
+      user_role:
+        type: string
+        example: 'owner'
+      user_active:
+        type: boolean
+        example: true
+
+title: "Authentication"
+paths:
+  /api/auth/get-otp-register:
+    get:
+      summary: Get OTP for user registration
+      description: Return the OTP for user registration.
+      produces:
+        - application/json
+      parameters:
+        - name: store_name
+          in: query
+          required: true
+          description: The name of the store.
+          type: string
+        - name: package_id
+          in: query
+          required: true
+          description: The ID of the package.
+          type: integer
+        - name: user_phone
+          in: query
+          required: true
+          description: The phone number of the user.
+          type: string
+        - name: user_password
+          in: query
+          required: true
+          description: The password of the user.
+          type: string
+        - name: user_accepted
+          in: query
+          required: true
+          description: The user accepted agreement.
+          type: boolean
+      responses:
+        200:
+          description: Successfully retrieved OTP.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              user:
+                $ref: '#/definitions/User'
+              otp:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        description: The OTP token.
+                      ref:
+                        type: string
+                        description: The reference number.
+        400:
+          description: Bad request.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'กรุณากรอกข้อมูลให้ครบถ้วน!'
+              missingFields:
+                type: array
+                items:
+                  type: string
+                example: ['store_name', 'package_id']
+        500:
+          description: Internal server error.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: 'Internal Server Error'
+
+  /api/auth/register:
+    post:
+      summary: Register a new user and store
+      description: Register a new user and create a new store.
+      produces:
+        - application/json
+      parameters:
+        - name: store_name
+          in: formData
+          description: The name of the store.
+          required: true
+          type: string
+        - name: package_id
+          in: formData
+          description: The ID of the package.
+          required: true
+          type: integer
+        - name: user_phone
+          in: formData
+          description: The phone number of the user.
+          required: true
+          type: string
+        - name: user_password
+          in: formData
+          description: The password of the user.
+          required: true
+          type: string
+        - name: user_accepted
+          in: formData
+          description: The user accepted agreement.
+          required: true
+          type: boolean
+        - name: pin
+          in: formData
+          description: The OTP pin.
+          required: true
+          type: string
+        - name: token
+          in: formData
+          description: The OTP token.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully registered a new user and store.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              user:
+                $ref: '#/definitions/User'
+              store:
+                type: object
+                description: Information of the created store.
+              package:
+                type: object
+                description: Information of the selected package.
+              access_token:
+                type: string
+                description: JWT access token.
+              refresh_token:
+                type: string
+                description: JWT refresh token.
+        400:
+          description: Bad request.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'กรุณากรอกข้อมูลให้ครบถ้วน!'
+              missingFields:
+                type: array
+                items:
+                  type: string
+                example: ['store_name', 'package_id']
+        500:
+          description: Internal server error.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: 'Internal Server Error'
+
+  /api/auth/login:
+    post:
+      summary: Authenticate user and generate JWT tokens
+      description: Authenticate user by phone number and password, and generate JWT tokens for authentication.
+      produces:
+        - application/json
+      parameters:
+        - name: user_phone
+          in: formData
+          description: The phone number of the user.
+          required: true
+          type: string
+        - name: user_password
+          in: formData
+          description: The password of the user.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully authenticated user and generated JWT tokens.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: 'ล็อกอินสำเร็จค่ะ!'
+              user:
+                $ref: '#/definitions/User'
+              uuid:
+                type: string
+                description: JWT token for user data.
+        400:
+          description: Bad request.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'กรุณาป้อนเบอร์โทรศัพท์หรือรหัสผ่าน!'
+        401:
+          description: Unauthorized access.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'รหัสผ่านไม่ถูกต้อง!'
+        403:
+          description: Forbidden access.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'บัญชีนี้ไม่สามารถใช้งานได้ กรุณาติดต่อ posyayee!'
+        404:
+          description: Not found.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: 'ไม่พบผู้ใช้งาน!'
+        500:
+          description: Internal server error.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              error:
+                type: string
+                example: 'Internal Server Error'
+
+  /api/auth/refresh:
+    get:
+      summary: Refresh Access Token
+      description: |
+        This endpoint is used to refresh the access token using a valid refresh token.
+      responses:
+        '200':
+          description: Successful token refresh
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Refresh token successfully refreshed'
+                  user:
+                    $ref: '#/definitions/User'
+                  uuid:
+                    type: string
+                    description: JWT token for user data.
+        '401':
+          description: Unauthorized request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Invalid or expired token'
+        '403':
+          description: Forbidden request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Refresh token not available'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: 'Internal server error'
+
+
+  /api/auth/logout:
+    get:
+      summary: Logout and clear cookies
+      description: Logout the user and clear cookies.
+      responses:
+        '200':
+          description: Cookies cleared successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Cookies deleted successfully
+        '500':
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: An error occurred while deleting cookies
