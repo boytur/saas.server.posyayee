@@ -5,6 +5,7 @@ require('dotenv').config();
 const Package = require('../../models/Package');
 const jwt = require('jsonwebtoken');
 const CreateCheckoutSession = require('../payments/CreateCheckoutSession');
+const { validateInteger } = require('../../libs/validate');
 
 const Register = async (req, res) => {
     try {
@@ -52,8 +53,15 @@ const Register = async (req, res) => {
             });
         }
 
+        if (!validateInteger(package_id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'แพ็คเกจไอดีไม่ถูกต้อง!'
+            });
+        }
+
         // Find package
-        let package = await Package.findByPk(package_id, {
+        let package = await Package.findByPk(parseInt(package_id), {
             attributes: ['package_id', 'package_name', 'package_price']
         });
 

@@ -1,24 +1,24 @@
 const { where } = require("sequelize");
 const Order = require("../../models/Order");
+const {validateInteger } = require("../../libs/validate");
 
 const GetOrderSessionId = async (req, res) => {
     try {
-
         const { order_id } = req.params;
 
-        if (!order_id) {
+        if (!order_id || !validateInteger(order_id)) {
             return res.status(400).json({
-                sucess: false,
-                messgae: "Invalid Order Id!",
+                success: false,
+                message: "ออเดอร์ไอดีไม่ถูกต้อง!",
             });
         }
 
-        const order = await Order.findByPk(order_id);
+        const order = await Order.findByPk(parseInt(order_id));
 
         if (!order) {
             return res.status(404).json({
-                sucess: false,
-                messgae: "ไม่พบออเดอร์ไอดีนี้!",
+                success: false,
+                message: "ไม่พบออเดอร์ไอดีนี้!",
             });
         }
 
@@ -38,9 +38,14 @@ const GetOrderSessionId = async (req, res) => {
                 store_id: order.store_id,
             }
         });
+    } catch (err) {
+        console.error("Err while get order session id: ", err);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            err: err
+        });
     }
-    catch (err) {
-        console.log("Err while get order session id: ", err);
-    }
-}
+};
+
 module.exports = GetOrderSessionId;
