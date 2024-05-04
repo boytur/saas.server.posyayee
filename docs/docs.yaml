@@ -373,7 +373,7 @@ paths:
 
 
   /api/auth/logout:
-    get:
+    delete:
       summary: Logout and clear cookies
       description: Logout the user and clear cookies.
       responses:
