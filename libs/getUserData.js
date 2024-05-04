@@ -28,4 +28,18 @@ const getStoreRemaining = async (req) => {
     return storeRemaining;
 };
 
-module.exports = { getUserStoreId, getStoreRemaining }
+const getStorePackageId = async (req) => {
+
+    if (!req) { return; }
+    const userTokenCookies = req.cookies.access_token;
+
+    if (!userTokenCookies) {
+        return;
+    }
+
+    const decoded = await jwt.decode(userTokenCookies);
+    const getStorePackageId = decoded?.user?.store?.package_id;
+    return getStorePackageId;
+};
+
+module.exports = { getUserStoreId, getStoreRemaining, getStorePackageId }
