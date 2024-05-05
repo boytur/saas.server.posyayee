@@ -34,7 +34,6 @@ const validatePagination = async (query, allowedSortByAttributes, defaultSortBy)
     }
     catch (err) {
         console.error("Err while validate pagination", err);
-        return res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 module.exports = validatePagination;
