@@ -2,6 +2,7 @@ const connection = require('../connections/connect');
 const { DataTypes } = require('sequelize');
 const Store = require('./Store');
 const Categories = require('./Categories');
+const ProductUnit = require('./ProductUnit');
 
 const Product = connection.define('products', {
     prod_id: {
@@ -18,17 +19,18 @@ const Product = connection.define('products', {
         type: DataTypes.STRING(225),
         allowNull: false,
     },
-    prod_description: {
-        type: DataTypes.STRING(225),
-        allowNull: true,
+    prod_status: {
+        type: DataTypes.STRING(45),
+        allowNull: false,
+        defaultValue:'active'
     },
     prod_cost: {
         type: DataTypes.DOUBLE,
         allowNull: false,
     },
-    prod_sale:{
+    prod_sale: {
         type: DataTypes.DOUBLE,
-        allowNull:false
+        allowNull: false
     },
     prod_quantity: {
         type: DataTypes.INTEGER,
@@ -41,6 +43,7 @@ const Product = connection.define('products', {
 });
 
 Product.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
-Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true, onDelete: "cascade" });
+Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true });
+Product.belongsTo(ProductUnit, { foreignKey: 'unit_id', allowNull: true });
 
 module.exports = Product;
