@@ -1,7 +1,9 @@
 const { getUserStoreId, getStorePackageId } = require("../../libs/getUserData");
 const uploadToB2 = require("../../libs/uploadB2");
 const uploadToCloundflare = require("../../libs/uploadToCloundflare");
+const { validateInteger } = require("../../libs/validate");
 const alertStoreRemaining = require("../../middlewares/alertStoreRemaining");
+const Categories = require("../../models/Categories");
 const Package = require("../../models/Package");
 const Product = require("../../models/Product");
 const Store = require("../../models/Store");
@@ -18,7 +20,8 @@ const AddProduct = async (req, res) => {
             prod_cost,
             prod_sale,
             prod_quantity,
-            prod_image
+            prod_image,
+            cat_id
         } = req.body;
 
         if (!prod_name || !prod_quantity || !prod_cost || !prod_sale) {
@@ -28,6 +31,8 @@ const AddProduct = async (req, res) => {
             });
         }
 
+        const storeId = await getUserStoreId(req);
+
         if (prod_barcode && prod_barcode?.length !== 13) {
             return res.status(400).json({
                 success: false,
@@ -35,7 +40,27 @@ const AddProduct = async (req, res) => {
             });
         }
 
-        const storeId = await getUserStoreId(req);
+        if (!validateInteger(cat_id)) {
+            return res.status(400).json({
+                success: false,
+                message: 'ไม่มีประเภทสินค้านี้ในระบบ!'
+            });
+        }
+
+        const existingCategories = await Categories.findAll({
+            where: {
+                cat_id: parseInt(cat_id),
+                store_id: storeId
+            }
+        });
+
+        if (existingCategories?.length <= 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'ไม่มีประเภทสินค้านี้ในระบบ!'
+            });
+        }
+        
         let fileName = `prod${storeId}${Date.now().toString()}`;
         const packageId = await getStorePackageId(req);
 
@@ -93,7 +118,8 @@ const AddProduct = async (req, res) => {
             'prod_sale': prod_sale,
             'prod_quantity': prod_quantity,
             'prod_image': `${process.env.URL}${fileName}`,
-            'store_id': parseInt(storeId)
+            'store_id': parseInt(storeId),
+            'cat_id': parseInt(cat_id)
         });
 
         // upload product image
