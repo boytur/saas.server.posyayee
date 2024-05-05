@@ -16,7 +16,6 @@ const AddProduct = async (req, res) => {
             auto_generate_barcode,
             prod_barcode,
             prod_name,
-            prod_description,
             prod_cost,
             prod_sale,
             prod_quantity,
@@ -113,7 +112,6 @@ const AddProduct = async (req, res) => {
         const newProduct = await Product.create({
             'prod_barcode': barcode,
             'prod_name': prod_name,
-            'prod_description': prod_description,
             'prod_cost': prod_cost,
             'prod_sale': prod_sale,
             'prod_quantity': prod_quantity,

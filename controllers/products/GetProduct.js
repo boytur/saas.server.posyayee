@@ -34,7 +34,7 @@ const GetProduct = async (req, res) => {
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] }
             ],
-            attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_description', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity',]
+            attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity',]
         });
 
         return res.status(200).json({
