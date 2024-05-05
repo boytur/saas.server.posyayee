@@ -45,6 +45,7 @@ const BillDetail = require('./models/BillDetail');
 const Otp = require('./models/Otp');
 const StoreLog = require('./models/StoreLog');
 const UserLog = require('./models/UserLog');
+const ProductUnit = require('./models/ProductUnit');
 
 const admin_analytics = require('./controllers/admins/analytics/Index');
 const products = require('./controllers/products/Index');
@@ -125,7 +126,7 @@ server.listen(port, () => {
 
 /** VERY DANGEROUS */
 const syceDb = async () => {
-    sequelize.sync({ alter: true, force: true })
+    sequelize.sync({ alter: true })
         .then(() => {
             console.log('Sequelize models synchronized with database schema');
             logger.info('Sequelize models synchronized with database schema');
