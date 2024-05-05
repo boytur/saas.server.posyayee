@@ -44,7 +44,7 @@ const GetProduct = async (req, res) => {
             sortBy: validated.sortBy,
             page: validated.page,
             total: products.count,
-            per_page: products.perPage,
+            per_page: validated.perPage,
             products: products.rows
         });
     }
