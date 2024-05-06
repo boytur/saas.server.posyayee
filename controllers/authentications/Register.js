@@ -6,6 +6,8 @@ const Package = require('../../models/Package');
 const jwt = require('jsonwebtoken');
 const CreateCheckoutSession = require('../payments/CreateCheckoutSession');
 const { validateInteger } = require('../../libs/validate');
+const ProductUnit = require('../../models/ProductUnit');
+const Categories = require('../../models/Categories');
 
 const Register = async (req, res) => {
     try {
@@ -115,6 +117,16 @@ const Register = async (req, res) => {
             "store_id": newStore.store_id
         });
 
+        const createNewUnit = await ProductUnit.create({
+            'unit_name': 'ชิ้น',
+            'store_id': newStore.store_id
+        });
+
+        const createNewCategories = await Categories.create({
+            'cat_name': 'ทั่วไป',
+            'store_id': newStore.store_id
+        });
+        
         const user = {
             user_acc_verify: newUser.user_acc_verify,
             user_id: newUser.user_id,
@@ -131,6 +143,7 @@ const Register = async (req, res) => {
                 package_name: package.package_name,
             }
         }
+
 
         const refreshToken = jwt.sign({ user }, process.env.JWT_REFRESH, { expiresIn: '30d' });
         const accessToken = jwt.sign({ user }, process.env.JWT_SECRET, { expiresIn: '1d' });
