@@ -1,5 +1,5 @@
 const express = require('express');
-const { GetProduct, GetAllProducts } = require('./GetProduct');
+const { GetProduct, GetAllProducts, GetOutStockProduct, GetInActiveProduct, GetNewProduct } = require('./GetProduct');
 const { can_view_product } = require('../../middlewares/permission');
 const AddProduct = require('./AddProduct');
 const products = express.Router();
@@ -22,6 +22,9 @@ const upload = multer({
 });
 
 products.get('/api/product/products', can_view_product, GetProduct);
+products.get('/api/product/outstock-products', can_view_product, GetOutStockProduct);
+products.get('/api/product/inactive-products', can_view_product, GetInActiveProduct);
+products.get('/api/product/new-products', can_view_product, GetNewProduct);
 products.get('/api/product/all-products', can_view_product, GetAllProducts);
 
 products.post('/api/product/add-product', can_view_product, upload.single('prod_image'), (req, res, next) => {
