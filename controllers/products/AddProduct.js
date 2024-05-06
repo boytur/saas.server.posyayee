@@ -25,6 +25,12 @@ const AddProduct = async (req, res) => {
             unit_id,
         } = req.body;
 
+        
+        const alertResponse = await alertStoreRemaining(req, res);
+        if (alertResponse) {
+            return;
+        }
+
         if (!prod_name || !prod_quantity || !prod_cost || !prod_sale || !unit_id || !cat_id) {
             return res.status(400).json({
                 success: false,
