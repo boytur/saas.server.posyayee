@@ -6,6 +6,7 @@ const alertStoreRemaining = require("../../middlewares/alertStoreRemaining");
 const Categories = require("../../models/Categories");
 const Package = require("../../models/Package");
 const Product = require("../../models/Product");
+const ProductUnit = require("../../models/ProductUnit");
 const Store = require("../../models/Store");
 const User = require("../../models/User");
 
@@ -20,10 +21,11 @@ const AddProduct = async (req, res) => {
             prod_sale,
             prod_quantity,
             prod_image,
-            cat_id
+            cat_id,
+            unit_id,
         } = req.body;
 
-        if (!prod_name || !prod_quantity || !prod_cost || !prod_sale) {
+        if (!prod_name || !prod_quantity || !prod_cost || !prod_sale || !unit_id || !cat_id) {
             return res.status(400).json({
                 success: false,
                 message: "กรุณากรอกข้อมูลสินค้าให้ครบถ้วน!"
@@ -39,27 +41,52 @@ const AddProduct = async (req, res) => {
             });
         }
 
-        if (!validateInteger(cat_id)) {
+        if (cat_id && !validateInteger(cat_id)) {
             return res.status(400).json({
                 success: false,
                 message: 'ไม่มีประเภทสินค้านี้ในระบบ!'
             });
         }
 
-        const existingCategories = await Categories.findAll({
-            where: {
-                cat_id: parseInt(cat_id),
-                store_id: storeId
+        if (cat_id) {
+            const existingCategories = await Categories.findAll({
+                where: {
+                    cat_id: parseInt(cat_id),
+                    store_id: storeId
+                }
+            });
+
+            if (existingCategories?.length <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'ไม่มีประเภทสินค้านี้ในระบบ!'
+                });
             }
-        });
-
-        if (existingCategories?.length <= 0) {
+        }
+        if (unit_id && !validateInteger(unit_id)) {
             return res.status(400).json({
                 success: false,
-                message: 'ไม่มีประเภทสินค้านี้ในระบบ!'
+                message: 'ไม่มีหน่วยเรียกสินค้านี้ในระบบ!'
             });
         }
-        
+
+        if (unit_id) {
+            const existingUnit = await ProductUnit.findAll({
+                where: {
+                    unit_id: parseInt(unit_id),
+                    store_id: storeId
+                }
+            });
+
+            if (existingUnit?.length <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'ไม่มีหน่วยเรียกสินค้านี้ในระบบ!'
+                });
+            }
+        }
+
+
         let fileName = `prod${storeId}${Date.now().toString()}`;
         const packageId = await getStorePackageId(req);
 
@@ -117,7 +144,8 @@ const AddProduct = async (req, res) => {
             'prod_quantity': prod_quantity,
             'prod_image': `${process.env.URL}${fileName}`,
             'store_id': parseInt(storeId),
-            'cat_id': parseInt(cat_id)
+            'cat_id': parseInt(cat_id),
+            'unit_id': parseInt(unit_id),
         });
 
         // upload product image
