@@ -11,7 +11,7 @@ const Refresh = async (req, res) => {
         if (!refreshToken) {
             return res.status(403).json({
                 success: false,
-                msg: 'Refresh token not available for this application.'
+                message: 'Refresh token not available for this application.'
             });
         }
 
@@ -35,7 +35,7 @@ const Refresh = async (req, res) => {
                 });
 
                 if (!user) {
-                    return res.status(401).json({ error: "ไม่พบผู้ใช้นี้ค่ะ" });
+                    return res.status(401).json({ success: false, message: "ไม่พบผู้ใช้นี้ค่ะ!" });
                 }
 
                 if (!user.store.store_active) {
@@ -44,7 +44,7 @@ const Refresh = async (req, res) => {
                         message: 'ร้านนี้ทำการปิดบัญชีร้านค้าแล้ว \n กรุณาติดต่อ posyayee เพื่อเปิดหากต้องการใช้งาน!',
                     });
                 }
-                
+
                 user = {
                     user_id: user.user_id,
                     user_acc_verify: user.user_acc_verify,
