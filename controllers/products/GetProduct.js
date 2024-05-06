@@ -3,6 +3,7 @@ const alertStoreRemaining = require('../../middlewares/alertStoreRemaining');
 const Categories = require('../../models/Categories');
 const Product = require('./../../models/Product');
 const validatePagination = require('../../libs/validatePagination');
+const ProductUnit = require('../../models/ProductUnit');
 
 const GetProduct = async (req, res) => {
     try {
@@ -32,9 +33,15 @@ const GetProduct = async (req, res) => {
             offset: (validated.page - 1) * validated.perPage,
             where: { store_id: storeId },
             include: [
-                { model: Categories, attributes: ['cat_name', 'cat_id'] }
+                { model: Categories, attributes: ['cat_name', 'cat_id'] },
+                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] }
             ],
-            attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity',]
+            attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity','prod_status','createdAt']
+        });
+
+        const categories = await Categories.findAll({
+            where: { store_id: storeId },
+            attributes: ['cat_id', 'cat_name']
         });
 
         return res.status(200).json({
@@ -45,7 +52,8 @@ const GetProduct = async (req, res) => {
             page: validated.page,
             total: products.count,
             per_page: validated.perPage,
-            products: products.rows
+            products: products.rows,
+            category: categories
         });
     }
     catch (err) {
