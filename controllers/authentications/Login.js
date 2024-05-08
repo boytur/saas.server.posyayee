@@ -67,6 +67,7 @@ const Login = async (req, res) => {
             store_id: user.store.store_id,
             store_name: user.store.store_name,
             store_remaining: user.store.store_remaining,
+            store_image:user.store.store_image,
             store_active: user.store.store_active,
             package_id: user.store.package_id,
         },

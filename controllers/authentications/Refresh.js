@@ -60,6 +60,7 @@ const Refresh = async (req, res) => {
                         store_name: user.store.store_name,
                         store_remaining: user.store.store_remaining,
                         store_active: user.store.store_active,
+                        store_image:user.store.store_image,
                         package_id: user.store.package_id,
                     },
                     package: {
