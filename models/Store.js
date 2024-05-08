@@ -9,9 +9,17 @@ const Store = connection.define('stores', {
         autoIncrement: true,
         primaryKey: true,
     },
+    store_image: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
+    },
     store_name: {
         type: DataTypes.STRING(225),
         allowNull: false,
+    },
+    store_phone: {
+        type: DataTypes.STRING(225),
+        allowNull: true,
     },
     store_address: {
         type: DataTypes.STRING(225),
