@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const User = require('../models/User');
 const Package = require('../models/Package');
 const Order = require('../models/Order');
-const { getNextOrderNumber } = require('./getNextOrderNumber');
+const { getNextOrderNumber } = require('../libs/getNextOrderNumber');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -76,7 +76,7 @@ const decreaseStoreRemaining = async () => {
                 const newOrder = await Order.create({
                     "order_title": `ค่าบริการแพ็คเกจรายเดือน ${package.package_name}`,
                     "order_no": newOrderNo,
-                    "order_note": "#",
+                    "order_note": "#สร้างรายการอัตโนมัติ",
                     "order_status": "initialize",
                     "order_price": package.package_price,
                     "order_id_no": orderIdNo,
