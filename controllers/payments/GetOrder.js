@@ -67,7 +67,7 @@ const GetOrder = async (req, res) => {
                 store_id: storeId,
                 user_id: userId,
             },
-            attributes: ['order_id', 'order_no', 'order_title', 'order_price', 'order_status', 'createdAt']
+            attributes: ['order_id', 'order_no', 'order_title','order_note', 'order_price', 'order_status', 'createdAt']
         });
 
         return res.status(200).json({
