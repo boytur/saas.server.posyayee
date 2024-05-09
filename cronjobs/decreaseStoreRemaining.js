@@ -64,7 +64,6 @@ const decreaseStoreRemaining = async () => {
                     }],
                     mode: 'payment',
                     success_url: `${process.env.MODE === "production" ? "https://posyayee.shop" : "http://localhost:5173"}` + `/payment/success?id=${orderSessionsNo}-${orderSessionsNoSecondary}`,
-                    cancel_url: `${process.env.MODE === "production" ? "https://posyayee.shop" : "http://localhost:5173"}` + `/payment/cancel?id=${orderSessionsNo}-${orderSessionsNoSecondary}`,
                 });
 
                 const orderIdNo = `${orderSessionsNo}-${orderSessionsNoSecondary}`;
