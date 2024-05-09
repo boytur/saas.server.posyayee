@@ -1,10 +1,12 @@
 const express = require('express');
 const { GetProduct, GetAllProducts, GetOutStockProduct, GetInActiveProduct, GetNewProduct } = require('./GetProduct');
-const { can_view_product } = require('../../middlewares/permission');
+const { can_view_product, can_add_unit, can_add_categories } = require('../../middlewares/permission');
 const AddProduct = require('./AddProduct');
 const products = express.Router();
 
 const multer = require('multer');
+const { GetUnit, AddUnit } = require('./Unit');
+const { GetCategories, AddCategories } = require('./Categories');
 const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
@@ -26,6 +28,8 @@ products.get('/api/product/outstock-products', can_view_product, GetOutStockProd
 products.get('/api/product/inactive-products', can_view_product, GetInActiveProduct);
 products.get('/api/product/new-products', can_view_product, GetNewProduct);
 products.get('/api/product/all-products', can_view_product, GetAllProducts);
+products.get("/api/product/units", can_add_unit, GetUnit);
+products.get("/api/product/categories", can_add_categories, GetCategories);
 
 products.post('/api/product/add-product', can_view_product, upload.single('prod_image'), (req, res, next) => {
     if (req.fileValidationError) {
@@ -36,5 +40,8 @@ products.post('/api/product/add-product', can_view_product, upload.single('prod_
     }
     AddProduct(req, res, next);
 });
+
+products.post("/api/product/unit", can_add_unit, AddUnit);
+products.post("/api/product/categories", can_add_categories, AddCategories);
 
 module.exports = products;
