@@ -35,6 +35,20 @@ class Permission {
         return false;
     }
 
+    canViewAddUnit() {
+        if ((this.role === 'owner' || this.role === 'employee' || this.role === 'manager') && this.user_acc_verify) {
+            return true;
+        }
+        return false;
+    }
+
+    canViewAddCategories() {
+        if ((this.role === 'owner' || this.role === 'employee' || this.role === 'manager') && this.user_acc_verify) {
+            return true;
+        }
+        return false;
+    }
+
     canSellProducts() {
         if ((this.role === 'owner' || this.role === 'employee' || this.role === 'manager') && this.user_acc_verify) {
             return true;
