@@ -1,6 +1,7 @@
 const { where } = require("sequelize");
 const Order = require("../../models/Order");
-const {validateInteger } = require("../../libs/validate");
+const { validateInteger } = require("../../libs/validate");
+const { getUserStoreId } = require("../../libs/getUserData");
 
 const GetOrderSessionId = async (req, res) => {
     try {
@@ -13,12 +14,20 @@ const GetOrderSessionId = async (req, res) => {
             });
         }
 
+        const storeId = await getUserStoreId(req);
         const order = await Order.findByPk(parseInt(order_id));
 
         if (!order) {
             return res.status(404).json({
                 success: false,
-                message: "ไม่พบออเดอร์ไอดีนี้!",
+                message: "ไม่พบออเดอร์ไอดีนี้ค่ะ!",
+            });
+        }
+
+        if (order.store_id !== storeId) {
+            return res.status(404).json({
+                success: false,
+                message: "ไม่พบออเดอร์ไอดีนี้ค่ะ!",
             });
         }
 
