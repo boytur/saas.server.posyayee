@@ -163,7 +163,7 @@ const GetNewProduct = async (req, res) => {
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
                 { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
-                {model: Promotion, attributes: ['promo_id', 'promo_name','promo_prod_amount','promo_prod_price', 'start_date','end_date'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -224,7 +224,7 @@ const GetInActiveProduct = async (req, res) => {
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
                 { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
-                {model: Promotion, attributes: ['promo_id', 'promo_name','promo_prod_amount','promo_prod_price', 'start_date','end_date'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -265,10 +265,11 @@ const GetAllProducts = async (req, res) => {
             where: {
                 store_id: store_id,
                 prod_status: 'active'
-            }, include: {
-                model: Categories,
-                attributes:['cat_id','cat_name'],
             },
+            include: [
+                { model: Categories, attributes: ['cat_id', 'cat_name'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
+            ],
             attributes: ['prod_id', 'prod_barcode', 'prod_name', 'prod_sale', 'prod_image', 'prod_quantity']
         });
 
