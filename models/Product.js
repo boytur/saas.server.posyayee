@@ -3,6 +3,7 @@ const { DataTypes } = require('sequelize');
 const Store = require('./Store');
 const Categories = require('./Categories');
 const ProductUnit = require('./ProductUnit');
+const Promotion = require('./Promotion');
 
 const Product = connection.define('products', {
     prod_id: {
@@ -22,7 +23,7 @@ const Product = connection.define('products', {
     prod_status: {
         type: DataTypes.STRING(45),
         allowNull: false,
-        defaultValue:'active'
+        defaultValue: 'active'
     },
     prod_cost: {
         type: DataTypes.DOUBLE,
@@ -45,5 +46,6 @@ const Product = connection.define('products', {
 Product.belongsTo(Store, { foreignKey: 'store_id', onDelete: "cascade" });
 Product.belongsTo(Categories, { foreignKey: 'cat_id', allowNull: true });
 Product.belongsTo(ProductUnit, { foreignKey: 'unit_id', allowNull: true });
+Product.belongsTo(Promotion, { foreignKey: 'promo_id', allowNull: true });
 
 module.exports = Product;

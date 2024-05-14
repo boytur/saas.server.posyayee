@@ -46,6 +46,7 @@ const Otp = require('./models/Otp');
 const StoreLog = require('./models/StoreLog');
 const UserLog = require('./models/UserLog');
 const ProductUnit = require('./models/ProductUnit');
+const Promotion = require('./models/Promotion');
 
 const admin_analytics = require('./controllers/admins/analytics/Index');
 const products = require('./controllers/products/Index');
