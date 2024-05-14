@@ -6,6 +6,7 @@ const validatePagination = require('../../libs/validatePagination');
 const ProductUnit = require('../../models/ProductUnit');
 const { Op } = require('sequelize');
 const moment = require('moment');
+const Promotion = require('../../models/Promotion');
 
 const GetProduct = async (req, res) => {
     try {
@@ -36,7 +37,8 @@ const GetProduct = async (req, res) => {
             where: { store_id: storeId },
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
-                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] }
+                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -97,7 +99,8 @@ const GetOutStockProduct = async (req, res) => {
             },
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
-                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] }
+                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -159,7 +162,8 @@ const GetNewProduct = async (req, res) => {
             },
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
-                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] }
+                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
+                {model: Promotion, attributes: ['promo_id', 'promo_name','promo_prod_amount','promo_prod_price', 'start_date','end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -219,7 +223,8 @@ const GetInActiveProduct = async (req, res) => {
             },
             include: [
                 { model: Categories, attributes: ['cat_name', 'cat_id'] },
-                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] }
+                { model: ProductUnit, attributes: ['unit_id', 'unit_name'] },
+                {model: Promotion, attributes: ['promo_id', 'promo_name','promo_prod_amount','promo_prod_price', 'start_date','end_date'] },
             ],
             attributes: ['prod_id', 'prod_image', 'prod_barcode', 'prod_name', 'prod_cost', 'prod_sale', 'prod_quantity', 'prod_status', 'createdAt']
         });
@@ -259,8 +264,11 @@ const GetAllProducts = async (req, res) => {
         const products = await Product.findAndCountAll({
             where: {
                 store_id: store_id,
-                prod_status:'active'
-            }, include: Categories,
+                prod_status: 'active'
+            }, include: {
+                model: Categories,
+                attributes:['cat_id','cat_name'],
+            },
             attributes: ['prod_id', 'prod_barcode', 'prod_name', 'prod_sale', 'prod_image', 'prod_quantity']
         });
 
