@@ -51,6 +51,7 @@ const Promotion = require('./models/Promotion');
 const admin_analytics = require('./controllers/admins/analytics/Index');
 const products = require('./controllers/products/Index');
 const decreaseStoreRemaining = require('./cronjobs/decreaseStoreRemaining');
+const { connectRedis } = require('./connections/redis');
 
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173', 'https://salev2.posyayee.shop', 'https://posyayee.shop'],
@@ -120,6 +121,7 @@ io.on('connection', (socket) => {
     });
 });
 
+connectRedis();
 server.listen(port, () => {
     console.log(`POSYAYEE-V2 app listening on port ${port}`);
     logger.info(`POSYAYEE-V2 app listening on port ${port}`);
