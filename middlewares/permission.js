@@ -69,6 +69,17 @@ const can_add_categories = function (req, res, next) {
     });
 };
 
+const can_create_promotion = function (req, res, next) {
+    authen.isLogedin(req, res, () => {
+        const permission = new Permission(req);
+        if (permission.canCreatePromotion()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการสร้างโปรโมชั่น' });
+        }
+    })
+}
+
 const can_sell_products = function (req, res, next) {
     authen.isLogedin(req, res);
     const permission = new Permission(req);
@@ -96,6 +107,7 @@ module.exports = {
     can_add_categories,
     can_view_product,
     can_add_unit,
+    can_create_promotion,
     can_sell_products,
     can_manage_employees,
 };
