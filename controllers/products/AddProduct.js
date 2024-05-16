@@ -1,3 +1,4 @@
+const { cache } = require("../../connections/redis");
 const { getUserStoreId, getStorePackageId } = require("../../libs/getUserData");
 const uploadToB2 = require("../../libs/uploadB2");
 const uploadToCloundflare = require("../../libs/uploadToCloundflare");
@@ -7,6 +8,7 @@ const Categories = require("../../models/Categories");
 const Package = require("../../models/Package");
 const Product = require("../../models/Product");
 const ProductUnit = require("../../models/ProductUnit");
+const Promotion = require("../../models/Promotion");
 const Store = require("../../models/Store");
 const User = require("../../models/User");
 
@@ -25,7 +27,6 @@ const AddProduct = async (req, res) => {
             unit_id,
         } = req.body;
 
-        
         const alertResponse = await alertStoreRemaining(req, res);
         if (alertResponse) {
             return;
@@ -161,6 +162,24 @@ const AddProduct = async (req, res) => {
         else {
             console.log("===== This product not has image =====");
         }
+
+        // add new product to cache
+        const products = await Product.findAndCountAll({
+            where: {
+                store_id: storeId,
+                prod_status: 'active'
+            },
+            include: [
+                { model: Categories, attributes: ['cat_id', 'cat_name'] },
+                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
+            ],
+            attributes: ['prod_id', 'prod_barcode', 'prod_name', 'prod_sale', 'prod_image', 'prod_quantity']
+        });
+
+        // clear old data
+        await cache.del(`products_${storeId}`);
+        // save new product data to cache
+        const saveProdToCache = await cache.set(`products_${storeId}`, JSON.stringify(products));
 
         return res.status(201).json({
             success: true,

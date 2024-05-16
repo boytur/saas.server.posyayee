@@ -7,6 +7,7 @@ const ProductUnit = require('../../models/ProductUnit');
 const { Op } = require('sequelize');
 const moment = require('moment');
 const Promotion = require('../../models/Promotion');
+const { cache } = require('../../connections/redis');
 
 const GetProduct = async (req, res) => {
     try {
@@ -259,11 +260,25 @@ const GetAllProducts = async (req, res) => {
             return;
         }
 
-        const store_id = await getUserStoreId(req) || 0;
+        const storeId = await getUserStoreId(req) || 0;
+
+        const productCache = await cache.get(`products_${storeId}`);
+        const categoriesCache = await cache.get(`categories_${storeId}`);
+
+        if (productCache && categoriesCache) {
+            return res.status(200).json({
+                success: true,
+                message: "get all products successfully",
+                source: 'cache',
+                total: JSON.parse(productCache).count,
+                products: JSON.parse(productCache).rows,
+                categories: JSON.parse(categoriesCache)
+            });
+        }
 
         const products = await Product.findAndCountAll({
             where: {
-                store_id: store_id,
+                store_id: storeId,
                 prod_status: 'active'
             },
             include: [
@@ -275,14 +290,18 @@ const GetAllProducts = async (req, res) => {
 
         const categories = await Categories.findAll({
             where: {
-                store_id: store_id,
+                store_id: storeId,
             }
             , attributes: ['cat_id', 'cat_name']
         });
 
+        const saveProdToCache = await cache.set(`products_${storeId}`,JSON.stringify(products));
+        const saveCatToCache = await cache.set(`categories_${storeId}`,JSON.stringify(categories));
+
         return res.status(200).json({
             success: true,
             message: "get all products successfully",
+            source: 'database',
             total: products.count,
             products: products.rows,
             categories: categories
