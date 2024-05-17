@@ -59,6 +59,8 @@ const corsOptions = {
     credentials: true,
 };
 
+app.set('trust proxy', true);
+
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 500, // maximum call 1 IP
@@ -99,8 +101,10 @@ app.use(limiter);
 
 // Default routes
 app.get('/', async (req, res) => {
+    const clientIP = req.ip;
     return res.status(200).json({
         success: true,
+        ip: clientIP,
         message: "welcome to server posyee v2",
         repository: "https://github.com/boytur/client-posyayee-v2",
     });
