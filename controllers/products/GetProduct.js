@@ -295,8 +295,8 @@ const GetAllProducts = async (req, res) => {
             , attributes: ['cat_id', 'cat_name']
         });
 
-        const saveProdToCache = await cache.set(`products_${storeId}`,JSON.stringify(products));
-        const saveCatToCache = await cache.set(`categories_${storeId}`,JSON.stringify(categories));
+        const saveProdToCache = await cache.setEx(`products_${storeId}`, 86400, JSON.stringify(products));
+        const saveCatToCache = await cache.setEx(`categories_${storeId}`, 86400, JSON.stringify(categories));
 
         return res.status(200).json({
             success: true,

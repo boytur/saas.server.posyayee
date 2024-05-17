@@ -1,3 +1,4 @@
+const { CategoriesCacheClear } = require("../../cache/Categories");
 const { cache } = require("../../connections/redis");
 const { getUserStoreId } = require("../../libs/getUserData");
 const { validateString } = require("../../libs/validate");
@@ -36,19 +37,7 @@ const AddCategories = async (req, res) => {
             'store_id': storeId
         });
 
-        // add new categoris to cache
-        const categories = await Categories.findAll({
-            where: {
-                store_id: storeId,
-            }
-            , attributes: ['cat_id', 'cat_name']
-        });
-
-        // delete old cache
-        await cache.del(`categories_${storeId}`);
-
-        // save new categories data to cache
-        const saveCatToCache = await cache.set(`categories_${storeId}`, JSON.stringify(categories));
+        await CategoriesCacheClear(storeId);
 
         return res.status(201).json({
             success: true,

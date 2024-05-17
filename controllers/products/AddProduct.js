@@ -1,3 +1,4 @@
+const { ProductCacheClear } = require("../../cache/Product");
 const { cache } = require("../../connections/redis");
 const { getUserStoreId, getStorePackageId } = require("../../libs/getUserData");
 const uploadToB2 = require("../../libs/uploadB2");
@@ -163,24 +164,8 @@ const AddProduct = async (req, res) => {
             console.log("===== This product not has image =====");
         }
 
-        // add new product to cache
-        const products = await Product.findAndCountAll({
-            where: {
-                store_id: storeId,
-                prod_status: 'active'
-            },
-            include: [
-                { model: Categories, attributes: ['cat_id', 'cat_name'] },
-                { model: Promotion, attributes: ['promo_id', 'promo_name', 'promo_prod_amount', 'promo_prod_price', 'start_date', 'end_date'] },
-            ],
-            attributes: ['prod_id', 'prod_barcode', 'prod_name', 'prod_sale', 'prod_image', 'prod_quantity']
-        });
-
-        // clear old data
-        await cache.del(`products_${storeId}`);
-        // save new product data to cache
-        const saveProdToCache = await cache.set(`products_${storeId}`, JSON.stringify(products));
-
+        await ProductCacheClear(storeId);
+        
         return res.status(201).json({
             success: true,
             message: `${prod_name} ถูกเพิ่มแล้วค่ะ!`,
