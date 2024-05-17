@@ -63,7 +63,7 @@ app.set('trust proxy', true);
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 500, // maximum call 1 IP
+    max: 100, // maximum call 1 IP
     standardHeaders: true,
     legacyHeaders: false,
     handler: function (req, res) {
@@ -71,7 +71,10 @@ const limiter = rateLimit({
             success: false,
             message: 'ตรวจพบคำขอจำนวนมาก โปรดหยุดการกระทำนั้น'
         });
-    }
+    },
+   keyGenerator: (req) => {
+    return req.ip
+  }
 });
 
 const swaggerOptions = {
