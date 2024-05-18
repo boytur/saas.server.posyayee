@@ -31,7 +31,7 @@ const BillDetail = connection.define('bill_details', {
         allowNull: false
     },
     bill_detail_profit: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         allowNull: false
     }
 });
