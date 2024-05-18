@@ -4,7 +4,6 @@ const OTP_SECRET_KEY = process.env.OTP_SECRET_KEY;
 const OTP_APP_KEY = process.env.OTP_APP_KEY;
 
 const fetch = require('node-fetch');
-const Otp = require("../../models/Otp");
 const User = require("../../models/User");
 const Refresh = require("./Refresh");
 const Package = require("../../models/Package");
