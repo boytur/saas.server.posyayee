@@ -81,13 +81,14 @@ const can_create_promotion = function (req, res, next) {
 }
 
 const can_sell_products = function (req, res, next) {
-    authen.isLogedin(req, res);
-    const permission = new Permission(req);
-    if (permission.canSellProducts()) {
-        next();
-    } else {
-        return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการขายสินค้า' });
-    }
+    authen.isLogedin(req, res, () => {
+        const permission = new Permission(req);
+        if (permission.canSellProducts()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการขายสินค้า' });
+        }
+    })
 };
 
 const can_manage_employees = function (req, res, next) {
