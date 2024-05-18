@@ -13,7 +13,7 @@ const SaleProduct = async (req, res) => {
         const { products, discounts, payment_method, user_credit_id, bill_change, bill_receive } = req.body;
 
         // validate data
-        if (!products || products.length === 0 || !bill_change) {
+        if (!products || products.length === 0 || !bill_receive) {
             return res.status(400).json({
                 success: false,
                 message: 'Please provide products, bill_change, bill_receive!'
