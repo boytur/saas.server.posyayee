@@ -5,6 +5,7 @@ const Bill = require('../../models/Bill');
 const UserCredit = require('../../models/UserCredit');
 const BillDetail = require('../../models/BillDetail');
 const Product = require('../../models/Product');
+const { ProductCacheClear } = require('../../cache/Product');
 
 const SaleProduct = async (req, res) => {
     try {
@@ -125,6 +126,8 @@ const SaleProduct = async (req, res) => {
                 }
             );
 
+            await ProductCacheClear(storeId);
+
             return res.status(200).json({
                 success: true,
                 message: "การขายเครดิตเสร็จเรียบร้อยค่ะ!"
@@ -185,6 +188,8 @@ const SaleProduct = async (req, res) => {
                     }
                 );
             };
+
+            await ProductCacheClear(storeId);
 
             return res.status(200).json({
                 success: true,
