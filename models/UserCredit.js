@@ -17,6 +17,10 @@ const UserCredit = connection.define('user_credits', {
         type: DataTypes.STRING(225),
         allowNull: false
     },
+    user_credit_amount: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
     user_credit_phone: {
         type: DataTypes.STRING(10),
         allowNull: true

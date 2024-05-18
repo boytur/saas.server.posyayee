@@ -14,7 +14,15 @@ const BillDetail = connection.define('bill_details', {
         type: DataTypes.STRING(225),
         allowNull: false
     },
+    bill_detail_cost: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
     bill_detail_amount: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
+    bill_detail_discount: {
         type: DataTypes.DOUBLE,
         allowNull: false
     },
@@ -25,6 +33,6 @@ const BillDetail = connection.define('bill_details', {
 });
 
 BillDetail.belongsTo(Bill, { foreignKey: 'bill_id', onDelete: "cascade" });
-BillDetail.belongsTo(Product, { foreignKey: 'prod_id'});
+BillDetail.belongsTo(Product, { foreignKey: 'prod_id' });
 
 module.exports = BillDetail;
