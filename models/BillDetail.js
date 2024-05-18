@@ -29,6 +29,10 @@ const BillDetail = connection.define('bill_details', {
     bill_detail_quantity: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    bill_detail_profit: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 });
 

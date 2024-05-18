@@ -31,6 +31,10 @@ const Bill = connection.define('bills', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    bill_all_profit: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     bill_payment_method: {
         type: DataTypes.STRING(45),
         allowNull: false
