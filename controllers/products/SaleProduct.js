@@ -69,7 +69,7 @@ const SaleProduct = async (req, res) => {
                 bill_change: bill_change,
                 bill_receive: bill_receive,
                 bill_all_discount: billAllDiscount,
-                bill_all_profit: billAllProfit,
+                bill_all_profit: (billAllProfit).toFixed(5),
                 user_credit_id: user_credit_id
             });
 
@@ -94,7 +94,7 @@ const SaleProduct = async (req, res) => {
                     bill_detail_discount: allDiscountProd,
                     bill_detail_quantity: product.quantity,
                     bill_detail_cost: product.prod_cost * product.quantity,
-                    bill_detail_profit: allProfitProd,
+                    bill_detail_profit: (allProfitProd).toFixed(5),
                     bill_id: newBill.bill_id,
                     prod_id: product.prod_id
                 })
@@ -143,7 +143,7 @@ const SaleProduct = async (req, res) => {
                 bill_receive: bill_receive,
                 bill_payment_method: payment_method,
                 bill_all_discount: billAllDiscount,
-                bill_all_profit: billAllProfit,
+                bill_all_profit: (billAllProfit).toFixed(5),
                 user_id: userId,
                 store_id: storeId,
             });
@@ -170,7 +170,7 @@ const SaleProduct = async (req, res) => {
                     bill_detail_cost: product.prod_cost * product.quantity,
                     bill_detail_discount: allDiscountProd,
                     bill_detail_quantity: product.quantity,
-                    bill_detail_profit: allProfitProd,
+                    bill_detail_profit: (allProfitProd).toFixed(5),
                     bill_id: newBill.bill_id,
                     prod_id: product.prod_id
                 })
