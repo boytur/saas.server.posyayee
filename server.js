@@ -143,9 +143,3 @@ const syceDb = async () => {
         });
 }
 //syceDb();
-
-cron.schedule('0 0 * * *', () => {
-    decreaseStoreRemaining();
-}, {
-    timezone: 'Asia/Bangkok'
-});
