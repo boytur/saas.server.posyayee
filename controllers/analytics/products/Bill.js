@@ -77,7 +77,7 @@ const GetBill = async (req, res) => {
             per_page: validated.perPage,
             start: start,
             end: end,
-            biils: bills.rows,
+            bills: bills.rows,
         });
     } catch (err) {
         console.log("Error while getting product history: ", err);
