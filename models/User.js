@@ -57,7 +57,11 @@ const User = connection.define('users', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false
-    }
+    },
+    user_last_login: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
 });
 User.belongsTo(Store, { foreignKey: 'store_id', allowNull: false, onDelete: "cascade" });
 
