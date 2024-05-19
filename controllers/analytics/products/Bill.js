@@ -12,7 +12,7 @@ const GetBill = async (req, res) => {
 
     try {
 
-        let { start, end } = req.query;
+        let { start, end, search } = req.query;
 
         const alertResponse = await alertStoreRemaining(req, res);
         if (alertResponse) {
@@ -20,7 +20,7 @@ const GetBill = async (req, res) => {
         }
 
         const defaultSortBy = 'bill_id';
-        const allowedSortByAttributes = ['bill_id', 'bill_no', 'bill_all_amount', 'bill_all_discount', 'bill_all_profit', 'bill_payment_method', 'createdAt'];
+        const allowedSortByAttributes = ['bill_id', 'bill_no', 'bill_all_amount', 'bill_all_discount', 'bill_all_profit', 'bill_payment_method', 'createdAt', 'user_id'];
 
         let validated = await validatePagination(req.query, allowedSortByAttributes, defaultSortBy);
 
@@ -34,7 +34,7 @@ const GetBill = async (req, res) => {
         const storeId = await getUserStoreId(req);
 
         // Check if start and end are valid dates
-        
+
         if ((start && isNaN(Date.parse(start))) || (end && isNaN(Date.parse(end)))) {
             return res.status(400).json({
                 success: false,
@@ -50,6 +50,10 @@ const GetBill = async (req, res) => {
             whereConditions.createdAt = {
                 [Op.between]: [start, end]
             };
+        }
+
+        if (search) {
+            whereConditions.user_id = search
         }
 
         const bills = await Bill.findAndCountAll({
@@ -73,7 +77,7 @@ const GetBill = async (req, res) => {
             per_page: validated.perPage,
             start: start,
             end: end,
-            products: bills.rows,
+            biils: bills.rows,
         });
     } catch (err) {
         console.log("Error while getting product history: ", err);
