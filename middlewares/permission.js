@@ -91,6 +91,17 @@ const can_get_bill = function (req, res, next) {
     })
 }
 
+const can_get_store_user = function (req, res, next) {
+    authen.isLogedin(req, res, () => {
+        const permission = new Permission(req);
+        if (permission.canGetStoreUser()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการดูบิล' });
+        }
+    })
+}
+
 const can_sell_products = function (req, res, next) {
     authen.isLogedin(req, res, () => {
         const permission = new Permission(req);
@@ -122,5 +133,6 @@ module.exports = {
     can_create_promotion,
     can_sell_products,
     can_get_bill,
+    can_get_store_user,
     can_manage_employees,
 };
