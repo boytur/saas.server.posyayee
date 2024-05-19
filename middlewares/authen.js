@@ -5,7 +5,7 @@ module.exports = {
         if (!token) {
             return res.status(401).json({
                 "success": false,
-                "message": "Access token required NICE TRY BABY!",
+                "message": "เซสชั่นหมดอายุ กรุณาเข้าสู่ระบบใหม่!",
             });
         }
 
