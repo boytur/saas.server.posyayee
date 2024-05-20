@@ -1,5 +1,6 @@
 const { bcryptCompare } = require("../../libs/bcrypt");
 const Package = require("../../models/Package");
+const Setting = require("../../models/Setting");
 const Store = require("../../models/Store");
 const User = require("../../models/User");
 const jwt = require('jsonwebtoken');
@@ -53,6 +54,15 @@ const Login = async (req, res) => {
         });
     }
 
+    const updateLastLogin = await User.update(
+        { user_last_login: new Date() },
+        { where: { user_id: user.user_id } }
+    );
+
+    const setting = await Setting.findOne({
+        where: { store_id: user.store_id }
+    });
+
     user = {
         user_id: user.user_id,
         user_acc_verify: user.user_acc_verify,
@@ -62,15 +72,17 @@ const Login = async (req, res) => {
         user_role: user.user_role,
         user_email: user.user_email,
         user_image: user.user_image,
+        user_last_login: updateLastLogin.user_last_login,
         store_id: user.store_id,
         store: {
             store_id: user.store.store_id,
             store_name: user.store.store_name,
             store_remaining: user.store.store_remaining,
-            store_image:user.store.store_image,
+            store_image: user.store.store_image,
             store_active: user.store.store_active,
             package_id: user.store.package_id,
         },
+        setting,
         package: {
             package_id: user.store.package.package_id,
             package_name: user.store.package.package_name,

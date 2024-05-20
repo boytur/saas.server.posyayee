@@ -8,6 +8,7 @@ const CreateCheckoutSession = require('../payments/CreateCheckoutSession');
 const { validateInteger } = require('../../libs/validate');
 const ProductUnit = require('../../models/ProductUnit');
 const Categories = require('../../models/Categories');
+const Setting = require('../../models/Setting');
 
 const Register = async (req, res) => {
     try {
@@ -114,7 +115,8 @@ const Register = async (req, res) => {
             "user_acc_verify": true,
             "user_active": true,
             "user_role": "owner",
-            "store_id": newStore.store_id
+            "store_id": newStore.store_id,
+            "user_last_login": new Date(),
         });
 
         const createNewUnit = await ProductUnit.create({
@@ -126,7 +128,11 @@ const Register = async (req, res) => {
             'cat_name': 'ทั่วไป',
             'store_id': newStore.store_id
         });
-        
+
+        const creatNewSetting = await Setting.create({
+            store_id: newStore.store_id
+        });
+
         const user = {
             user_acc_verify: newUser.user_acc_verify,
             user_id: newUser.user_id,
@@ -138,6 +144,7 @@ const Register = async (req, res) => {
             user_image: newUser.user_image,
             store_id: newUser.store_id,
             store: newStore,
+            setting: creatNewSetting,
             package: {
                 package_id: package.package_id,
                 package_name: package.package_name,

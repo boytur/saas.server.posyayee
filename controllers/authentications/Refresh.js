@@ -3,6 +3,7 @@ const userDecode = require('../../libs/userDecode');
 const User = require('../../models/User');
 const Store = require('../../models/Store');
 const Package = require('../../models/Package');
+const Setting = require('../../models/Setting');
 
 const Refresh = async (req, res) => {
     try {
@@ -45,6 +46,10 @@ const Refresh = async (req, res) => {
                     });
                 }
 
+                const setting = await Setting.findOne({
+                    where: { store_id: user.store_id }
+                });
+
                 user = {
                     user_id: user.user_id,
                     user_acc_verify: user.user_acc_verify,
@@ -54,15 +59,17 @@ const Refresh = async (req, res) => {
                     user_role: user.user_role,
                     user_email: user.user_email,
                     user_image: user.user_image,
+                    user_last_login: user.user_last_login,
                     store_id: user.store_id,
                     store: {
                         store_id: user.store.store_id,
                         store_name: user.store.store_name,
                         store_remaining: user.store.store_remaining,
                         store_active: user.store.store_active,
-                        store_image:user.store.store_image,
+                        store_image: user.store.store_image,
                         package_id: user.store.package_id,
                     },
+                    setting,
                     package: {
                         package_id: user.store.package.package_id,
                         package_name: user.store.package.package_name,
