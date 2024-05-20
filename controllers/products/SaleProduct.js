@@ -130,7 +130,8 @@ const SaleProduct = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: "การขายเครดิตเสร็จเรียบร้อยค่ะ!"
+                message: "การขายเครดิตเสร็จเรียบร้อยค่ะ!",
+                bill_no: billNo
             })
         }
 
@@ -193,7 +194,8 @@ const SaleProduct = async (req, res) => {
 
             return res.status(200).json({
                 success: true,
-                message: "การขายเงินสดเสร็จเรียบร้อยค่ะ!"
+                message: "การขายเงินสดเสร็จเรียบร้อยค่ะ!",
+                bill_no: billNo
             })
         }
     }
