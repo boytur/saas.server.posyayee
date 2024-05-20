@@ -113,6 +113,7 @@ app.get('/', async (req, res) => {
 
 app.use(payments);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(authentications);
 app.use(admin_analytics);
 app.use(products);
