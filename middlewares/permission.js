@@ -113,6 +113,17 @@ const can_sell_products = function (req, res, next) {
     })
 };
 
+const can_view_dashboard = function (req, res, next) {
+    authen.isLogedin(req, res, () => {
+        const permission = new Permission(req);
+        if (permission.canViewDashboard()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการดูแดชบอร์ด' });
+        }
+    })
+};
+
 const can_manage_employees = function (req, res, next) {
     authen.isLogedin(req, res);
     const permission = new Permission(req);
@@ -134,5 +145,6 @@ module.exports = {
     can_sell_products,
     can_get_bill,
     can_get_store_user,
+    can_view_dashboard,
     can_manage_employees,
 };

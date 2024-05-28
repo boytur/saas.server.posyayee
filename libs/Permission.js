@@ -77,6 +77,13 @@ class Permission {
         return false;
     }
 
+    canViewDashboard() {
+        if ((this.role === 'owner' || this.role === 'manager') && this.user_acc_verify) {
+            return true;
+        }
+        return false;
+    }
+
     canManageEmployees() {
         if (this.role === 'god' || this.role === 'owner' || sthis.role === 'manager') {
             return true;
