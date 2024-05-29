@@ -45,7 +45,7 @@ const GetCashFlow = async (req, res) => {
         // Retrieve bills based on conditions
         const bills = await Bill.findAndCountAll({
             where: whereConditions,
-            attributes: ['bill_id', 'bill_all_amount', 'bill_all_profit', 'bill_payment_method', 'createdAt', 'user_id']
+            attributes: ['bill_id', 'bill_all_amount', 'bill_all_profit','bill_all_discount', 'bill_payment_method', 'createdAt', 'user_id']
         });
 
         // Retrieve users associated with the store
