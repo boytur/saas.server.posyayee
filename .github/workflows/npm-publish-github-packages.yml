@@ -1,0 +1,52 @@
+name: Node.js Package
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      APK_KEY: ${{ secrets.APK_KEY }}
+      APK_KEY_ID: ${{ secrets.APK_KEY_ID }}
+      BUCKET: ${{ secrets.BUCKET }}
+      BUCKET_ID: ${{ secrets.BUCKET_ID }}
+      BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_USER: ${{ secrets.DB_USER }}
+      JWT_REFRESH: ${{ secrets.JWT_REFRESH }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_UUID: ${{ secrets.JWT_UUID }}
+      MODE: ${{ secrets.MODE }}
+      PORT: ${{ secrets.PORT }}
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      REDIS_PORT: ${{ secrets.REDIS_PORT }}
+      REDIS_USER: ${{ secrets.REDIS_USER }}
+      URL: ${{ secrets.URL }}
+      __TEST__PASS: ${{ secrets.__TEST__PASS }}
+      __TEST__PHONE: ${{ secrets.__TEST__PHONE }}
+      __TEST__PHONE_NOT_ACCTIVE: ${{ secrets.__TEST__PHONE_NOT_ACCTIVE }}
+      __TEST__USER_NOT_ACCTIVE: ${{ secrets.__TEST__USER_NOT_ACCTIVE }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run tests
+      run: npm test
