@@ -15,7 +15,7 @@ const getNextOrderNumber = async () => {
     return lastOrderNo + 1;
 }
 
-const CreateCheckoutSession = async (req, res, package, user, newStore) => {
+const CreateCheckoutSession = async (req, res, packages, user, newStore) => {
     try {
         // Create new order
         const newOrderNo = await getNextOrderNumber();
@@ -30,9 +30,9 @@ const CreateCheckoutSession = async (req, res, package, user, newStore) => {
                 price_data: {
                     currency: 'thb',
                     product_data: {
-                        name: `ค่าบริการแพ็คเกจรายเดือนแพ็คเกจ${package.package_name}`,
+                        name: `ค่าบริการแพ็คเกจรายเดือนแพ็คเกจ${packages.package_name}`,
                     },
-                    unit_amount: `${(package.package_price) * (100)}`,
+                    unit_amount: `${(packages.package_price) * (100)}`,
                 },
                 quantity: 1,
             }],
@@ -47,15 +47,15 @@ const CreateCheckoutSession = async (req, res, package, user, newStore) => {
         }
 
         const newOrder = await Order.create({
-            "order_title": `ค่าบริการแพ็คเกจรายเดือน ${package.package_name}`,
+            "order_title": `ค่าบริการแพ็คเกจรายเดือน ${packages.package_name}`,
             "order_no": newOrderNo,
             "order_note": "#",
             "order_status": "initialize",
-            "order_price": package.package_price,
+            "order_price": packages.package_price,
             "order_id_no": orderIdNo,
             "order_session_id": session.id,
             "order_status": session.status,
-            "package_id": package.package_id,
+            "package_id": packages.package_id,
             "user_id": user.user_id,
             "store_id": newStore.store_id
         });
