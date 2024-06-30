@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const userDecode = (req) => {
     try {
         if (!req) { return; }
-        const userTokenCookies = req.cookies.access_token
+        const userTokenCookies = req.cookies.refresh_token
         if (!userTokenCookies) {
             return;
         }

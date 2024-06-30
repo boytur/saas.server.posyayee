@@ -12,7 +12,7 @@ const Login = async (req, res) => {
     if (!user_phone || !user_password) {
         return res.status(400).json(
             {
-                sucess: false,
+                success: false,
                 message: 'กรุณาป้อนเบอร์โทรศัพท์หรือรหัสผ่าน!',
             });
     }
@@ -26,14 +26,14 @@ const Login = async (req, res) => {
 
     if (!user || !user.user_acc_verify) {
         return res.status(404).json({
-            sucess: false,
+            success: false,
             message: 'ไม่พบผู้ใช้งาน!',
         });
     }
 
     if (!user.user_active) {
         return res.status(403).json({
-            sucess: false,
+            success: false,
             message: 'บัญชีนี้ไม่สามารถใช้งานได้ กรุณาติดต่อ posyayee!',
         });
     }
@@ -42,14 +42,14 @@ const Login = async (req, res) => {
 
     if (!comparePassword) {
         return res.status(401).json({
-            sucess: false,
+            success: false,
             message: 'รหัสผ่านไม่ถูกต้อง!',
         });
     }
 
     if (!user.store.store_active) {
         return res.status(401).json({
-            sucess: false,
+            success: false,
             message: "ร้านนี้ทำการปิดบัญชีร้านค้าแล้ว กรุณาติดต่อ Posyayee เพื่อเปิดหากต้องการใช้งาน!",
         });
     }

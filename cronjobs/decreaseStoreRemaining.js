@@ -37,7 +37,7 @@ const decreaseStoreRemaining = async () => {
                     }
                 });
 
-                const package = await Package.findOne({
+                const packages = await Package.findOne({
                     where: {
                         package_id: store.package_id,
                     }
@@ -56,9 +56,9 @@ const decreaseStoreRemaining = async () => {
                         price_data: {
                             currency: 'thb',
                             product_data: {
-                                name: `ค่าบริการแพ็คเกจรายเดือนแพ็คเกจ${package.package_name}`,
+                                name: `ค่าบริการแพ็คเกจรายเดือนแพ็คเกจ${packages.package_name}`,
                             },
-                            unit_amount: `${(package.package_price) * (100)}`,
+                            unit_amount: `${(packages.package_price) * (100)}`,
                         },
                         quantity: 1,
                     }],
@@ -73,15 +73,15 @@ const decreaseStoreRemaining = async () => {
                 }
 
                 const newOrder = await Order.create({
-                    "order_title": `ค่าบริการแพ็คเกจรายเดือน ${package.package_name}`,
+                    "order_title": `ค่าบริการแพ็คเกจรายเดือน ${packages.package_name}`,
                     "order_no": newOrderNo,
                     "order_note": "#สร้างรายการอัตโนมัติ",
                     "order_status": "initialize",
-                    "order_price": package.package_price,
+                    "order_price": packages.package_price,
                     "order_id_no": orderIdNo,
                     "order_session_id": session.id,
                     "order_status": session.status,
-                    "package_id": package.package_id,
+                    "package_id": packages.package_id,
                     "user_id": ownerStore.user_id,
                     "store_id": store.store_id
                 });

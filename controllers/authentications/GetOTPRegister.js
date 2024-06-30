@@ -62,11 +62,11 @@ const GetOTPRegister = async (req, res) => {
         }
 
         // Find package
-        let package = await Package.findByPk(parseInt(package_id), {
+        let packages = await Package.findByPk(parseInt(package_id), {
             attributes: ['package_id', 'package_name', 'package_price']
         });
 
-        if (package?.length === 0 || !package) {
+        if (packages?.length === 0 || !packages) {
             return res.status(400).json({
                 "success": false,
                 "message": "ไม่มีแพ็คเกจไอดีนี้อยู่จริง!"
