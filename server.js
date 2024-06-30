@@ -52,7 +52,7 @@ const analytics = require('./controllers/analytics/Index');
 const Setting = require('./models/Setting');
 
 const corsOptions = {
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.1.34:5173', 'http://127.0.0.1:5173', 'https://salev2.posyayee.shop', 'https://posyayee.shop'],
+    origin: ['https://sale.posyayee.shop', 'https://posyayee.shop'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
 };
@@ -95,7 +95,9 @@ const morganStream = {
     }
 };
 
-app.use(morgan('combined', { stream: morganStream }));
+if (process.env.MODE !== 'test') {
+    app.use(morgan('combined', { stream: morganStream }));
+}
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(limiter);
@@ -128,11 +130,14 @@ io.on('connection', (socket) => {
     });
 });
 
-connectRedis();
-server.listen(port, () => {
-    console.log(`POSYAYEE-V2 app listening on port ${port}`);
-    logger.info(`POSYAYEE-V2 app listening on port ${port}`);
-});
+if (process.env.MODE !== 'test') {
+    connectRedis();
+    server.listen(port, () => {
+        console.log(`POSYAYEE-V2 app listening on port ${port}`);
+        logger.info(`POSYAYEE-V2 app listening on port ${port}`);
+    });
+}
+
 
 /** VERY DANGEROUS */
 const syceDb = async () => {
@@ -147,3 +152,5 @@ const syceDb = async () => {
         });
 }
 //syceDb();
+
+module.exports = { app, server };
