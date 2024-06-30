@@ -95,7 +95,9 @@ const morganStream = {
     }
 };
 
-app.use(morgan('combined', { stream: morganStream }));
+if (process.env.MODE !== 'test') {
+    app.use(morgan('combined', { stream: morganStream }));
+}
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(limiter);
@@ -128,11 +130,14 @@ io.on('connection', (socket) => {
     });
 });
 
-connectRedis();
-server.listen(port, () => {
-    console.log(`POSYAYEE-V2 app listening on port ${port}`);
-    logger.info(`POSYAYEE-V2 app listening on port ${port}`);
-});
+if (process.env.MODE !== 'test') {
+    connectRedis();
+    server.listen(port, () => {
+        console.log(`POSYAYEE-V2 app listening on port ${port}`);
+        logger.info(`POSYAYEE-V2 app listening on port ${port}`);
+    });
+}
+
 
 /** VERY DANGEROUS */
 const syceDb = async () => {
@@ -147,3 +152,5 @@ const syceDb = async () => {
         });
 }
 //syceDb();
+
+module.exports = { app, server };
