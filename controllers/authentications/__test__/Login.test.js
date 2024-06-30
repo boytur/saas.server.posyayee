@@ -1,7 +1,6 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const { app, server } = require('../../../server');
-const { cache } = require('../../../connections/redis');
 
 describe('POST /api/auth/login', () => {
     it('should log in user and return tokens', async () => {
@@ -94,13 +93,11 @@ describe('POST /api/auth/login', () => {
 });
 
 beforeAll(async () => {
-    await cache.connect();
     server.listen(4000, () => {
         console.log(`POSYAYEE-V2 app listening on port 4000`);
     });
 });
 
 afterAll(async () => {
-    await cache.disconnect();
     server.close();
 });
