@@ -125,13 +125,25 @@ const can_view_dashboard = function (req, res, next) {
 };
 
 const can_manage_employees = function (req, res, next) {
-    authen.isLogedin(req, res);
-    const permission = new Permission(req);
-    if (permission.canManageEmployees()) {
-        next();
-    } else {
-        return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการจัดการพนักงาน' });
-    }
+    authen.isLogedin(req, res,() => {
+        const permission = new Permission(req);
+        if (permission.canManageEmployees()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการจัดการพนักงาน' });
+        }
+    });
+};
+
+const can_edit_store = function (req, res, next) {
+    authen.isLogedin(req, res, () => {
+        const permission = new Permission(req);
+        if (permission.canEditStore()) {
+            next();
+        } else {
+            return res.status(403).json({ success: false, message: 'แกไม่มีสิทธิ์! ในการแก้ไขร้านค้า!' });
+        }
+    });
 };
 
 module.exports = {
@@ -147,4 +159,5 @@ module.exports = {
     can_get_store_user,
     can_view_dashboard,
     can_manage_employees,
+    can_edit_store,
 };

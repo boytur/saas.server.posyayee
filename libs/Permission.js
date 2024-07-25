@@ -90,6 +90,13 @@ class Permission {
         }
         return false;
     }
+    
+    canEditStore() {
+        if (this.role === 'god' || this.role === 'owner' || sthis.role === 'manager') {
+            return true;
+        }
+        return false;
+    }
 }
 
 module.exports = Permission;
