@@ -9,6 +9,7 @@ const { GetUnit, AddUnit } = require('./Unit');
 const { GetCategories, AddCategories } = require('./Categories');
 const { CreatePromotion, DeletePromotion } = require('./Promotion');
 const SaleProduct = require('./SaleProduct');
+const EditProduct = require('./EditProduct');
 const storage = multer.memoryStorage();
 const upload = multer({
     storage: storage,
@@ -33,6 +34,16 @@ products.get('/api/product/all-products', can_view_product, GetAllProducts);
 products.get("/api/product/units", can_add_unit, GetUnit);
 products.get("/api/product/categories", can_add_categories, GetCategories);
 
+products.put('/api/product/product',can_view_product,upload.single('prod_image'),(req,res,next)=>{
+    if (req.fileValidationError) {
+        return res.status(400).json({
+            success: false,
+            message: req.fileValidationError
+        });
+    }
+    EditProduct(req, res, next);
+ });
+ 
 products.post('/api/product/add-product', can_view_product, upload.single('prod_image'), (req, res, next) => {
     if (req.fileValidationError) {
         return res.status(400).json({
