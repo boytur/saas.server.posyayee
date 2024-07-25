@@ -31,7 +31,6 @@ const logger = createLogger({
 
 const authentications = require('./controllers/authentications/Index');
 const payments = require('./controllers/payments/Index');
-const stores = require('./controllers/stores');
 const sequelize = require('./connections/connect');
 const Package = require('./models/Package');
 const Store = require('./models/Store');
@@ -51,6 +50,7 @@ const decreaseStoreRemaining = require('./cronjobs/decreaseStoreRemaining');
 const { connectRedis } = require('./connections/redis');
 const analytics = require('./controllers/analytics/Index');
 const Setting = require('./models/Setting');
+const storesRoute = require('./controllers/stores');
 
 
 const corsOptions = {
@@ -122,7 +122,7 @@ app.use(authentications);
 app.use(admin_analytics);
 app.use(products);
 app.use(analytics);
-app.use(stores);
+app.use(storesRoute);
 
 io.on('connection', (socket) => {
     console.log('A user connected', socket.id);

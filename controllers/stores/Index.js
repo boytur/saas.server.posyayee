@@ -1,7 +1,7 @@
 const express = require('express');
 const EditStoreProfile = require('./EditStoreProfile');
 const { can_edit_store, can_manage_employees } = require('../../middlewares/permission');
-const stores = express.Router();
+const storesRoute = express.Router();
 const multer = require('multer');
 const AddEmployee = require('./AddEmployee');
 const storage = multer.memoryStorage();
@@ -19,7 +19,7 @@ const upload = multer({
         }
     }
 });
-stores.put('/api/stores/edit-store-profile', can_edit_store,upload.single('store_image'),(req, res, next) => {
+storesRoute.put('/api/stores/edit-store-profile', can_edit_store,upload.single('store_image'),(req, res, next) => {
     if (req.fileValidationError) {
         return res.status(400).json({
             success: false,
@@ -28,5 +28,6 @@ stores.put('/api/stores/edit-store-profile', can_edit_store,upload.single('store
     }
     EditStoreProfile(req, res, next);
 });
-stores.post('/api/stores/add-employee',can_manage_employees,AddEmployee);
-module.exports = stores;
+storesRoute.post('/api/stores/add-employee',can_manage_employees,AddEmployee);
+
+module.exports = storesRoute;
