@@ -50,7 +50,7 @@ const decreaseStoreRemaining = require('./cronjobs/decreaseStoreRemaining');
 const { connectRedis } = require('./connections/redis');
 const analytics = require('./controllers/analytics/Index');
 const Setting = require('./models/Setting');
-const storesRoute = require('./controllers/stores');
+const storesRoute = require('./controllers/stores/route');
 
 
 const corsOptions = {
